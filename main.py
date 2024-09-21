@@ -5,16 +5,21 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 
 st.title("Monte Carlo Options Pricing")
+st.sidebar.title("Simulation Parameters")
 
 # Parameters for Monte Carlo simulation
-ticker = st.text_input('Ticker symbol', 'AAPL')
-option_type = st.text_input('Types of Options', 'call or put')
-strike_price = st.number_input('Strike price', 0)
-risk_free_rate = st.slider('Risk-free rate (%)', 0, 100, 10)
-sigma = st.slider('Sigma (%)', 0, 100, 20)
-exercise_date = st.date_input('Exercise date', min_value=datetime.today() + timedelta(days=1), value=datetime.today() + timedelta(days=365))
-number_of_simulations = st.slider('Number of simulations', 100, 100000, 10000)
-num_of_movements = st.slider('Number of price movement simulations to be visualized', 0, int(number_of_simulations / 10), 100)
+ticker = st.sidebar.text_input('Ticker symbol', 'AAPL')
+#option_type = st.sidebar.text_input('Types of Options', 'call or put')
+option_type = st.sidebar.selectbox(
+        'Types of Options', ("call", "put")
+    )
+strike_price = st.sidebar.number_input('Strike price', 0)
+risk_free_rate = st.sidebar.slider('Risk-free rate (%)', 0, 100, 10)
+sigma = st.sidebar.slider('Sigma (%)', 0, 100, 20)
+exercise_date = st.sidebar.date_input('Exercise date', min_value=datetime.today() + timedelta(days=1), value=datetime.today() + timedelta(days=365))
+number_of_simulations = st.sidebar.slider('Number of simulations', 100, 100000, 10000)
+num_of_movements = st.sidebar.slider('Number of price movement simulations to be visualized', 0, int(number_of_simulations / 10), 100)
+st.sidebar.markdown(f"Credit: https://www.linkedin.com/in/tassatap-sanguansuk-b7b508237/")
 
 # Calculate Monte Carlo Simulation of Stock Prices
 def monte_carlo_option_pricing(S0, K, T, r, sigma, num_simulations, num_steps, option_type='call'):
@@ -66,4 +71,5 @@ if st.button(f'Calculate option price for {ticker}'):
 
     # Displaying call/put option price
     st.subheader(f'simulated option price: {sim_option_price}')
+    
     
